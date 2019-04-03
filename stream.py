@@ -1,5 +1,7 @@
 import tweepy
 import json
+import Queue
+import threading
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 
@@ -21,19 +23,25 @@ class Listener(StreamListener):
 
     def on_data(self, data):
         with open('text1.txt', 'a') as output:
-            json.dump(data, output)
-            return True
+            output.write(data)
+        return True
 
     def on_error(self, status):
         print(status)
 
 if __name__ == '__main__':
+    q = Que.Que()
     listener = Listener()
     auth = tweepy.OAuthHandler(API_key, API_secret)
     auth.set_access_token(OAUTH_token, OAUTH_token_secret)
     stream = Stream(auth, listener)
-    stream.filter(track=["baudet"],languages=['nl'], async=True)
-    
+    stream.filter(track=["why"],languages=['en'], async=True)
+    with open('text1.txt', 'r') as output:
+        for line in output:
+            newline = json.loads(line)
+            if newline['in_reply_to_status_id']:
+                print(line)
+
 
     '''with open('text1.json') as output:
         dat = output.read()
