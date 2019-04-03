@@ -1,4 +1,5 @@
 import tweepy
+import json
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 
@@ -19,8 +20,9 @@ OAUTH_token_secret = credentials['oauth_token_secret']
 class Listener(StreamListener):
 
     def on_data(self, data):
-        print(data)
-        return True
+        with open('text1.txt', 'a') as output:
+            json.dump(data, output)
+            return True
 
     def on_error(self, status):
         print(status)
@@ -30,4 +32,10 @@ if __name__ == '__main__':
     auth = tweepy.OAuthHandler(API_key, API_secret)
     auth.set_access_token(OAUTH_token, OAUTH_token_secret)
     stream = Stream(auth, listener)
-    stream.filter(track=["nederland"],languages=['nl'])
+    stream.filter(track=["baudet"],languages=['nl'], async=True)
+    
+
+    '''with open('text1.json') as output:
+        dat = output.read()
+        for line in dat:
+            print(line)'''
