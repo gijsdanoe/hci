@@ -32,8 +32,8 @@ def check_reply(q1_reply_id, list_replies):
         return ["This Twitter conversation is private"]
 
 # Go to next conversation
-def next_conversation(queue):
-    q1 = queue.get()
+def next_conversation():
+    q1 = q.get()
     q1_reply = q1['in_reply_to_status_id']
     return check_reply(q1_reply, [q1['text']])
 
@@ -80,27 +80,4 @@ if __name__ == '__main__':
     setQueue()
     
     while True:
-        print(next_conversation(q))
-
-
-
-
-
-
-
-'''
-    print(q1['text'])
-    print()
-    print(q2.text)
-    print()
-    print(q3.text)
-
-    
-
-
-    #print(check_reply(q1, 1, []))
-    print(q1['text'])
-    print(api.get_status(stat_id).text)
-    print(n_stat_id)
-    print(api.get_status(n_stat_id).text)'''
-    
+        print(next_conversation())
