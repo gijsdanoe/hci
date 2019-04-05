@@ -6,6 +6,7 @@ import tweepy
 import json
 import queue
 import threading
+import pickle
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 
@@ -27,7 +28,7 @@ def check_reply(q1_reply_id, list_replies):
             check_reply(new_id, reply_list)
         else:
             pass
-        return reply_list
+        return reply_list[::-1]
     except tweepy.error.TweepError:
         return ["This Twitter conversation is private"]
 
@@ -46,6 +47,14 @@ def setQueue():
                     q.put(newline)
             except KeyError:
                 pass
+
+def save(conversation):
+    if 3 <= len(conversation) <= 10:
+        with open("text.pickle", "ab") as file:
+            pickle.dump(conversation, file)
+            print(conversation)
+    else:
+        pass
 
 # Setting the credentials
 credentials = import_credentials('credentials.txt')
@@ -78,6 +87,17 @@ if __name__ == '__main__':
     stream = Stream(auth, listener)
     stream.filter(track=["why"],languages=['en'], async=True)
     setQueue()
+
     
     while True:
-        print(next_conversation())
+        threading.Thread(target=save, args=([next_conversation()]), daemon=True).start()
+    with open("text.pickle", "rb") as f:
+        for i in range(10):
+            print(pickle.load(f))
+
+''''''
+
+
+    #with open('output.pickle', 'rb') as output:
+    #   itemlist = pickle.load(output)
+        
