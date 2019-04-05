@@ -48,13 +48,23 @@ def setQueue():
             except KeyError:
                 pass
 
-def save(conversation):
+def save(conversation, file):
     if 3 <= len(conversation) <= 10:
-        with open("text.pickle", "ab") as file:
-            pickle.dump(conversation, file)
-            print(conversation)
+        with open(file, "ab") as f:
+            pickle.dump(conversation, f)
     else:
         pass
+
+def get_conversations(file):
+    conversation_list = []
+    with open(file, "rb") as f:
+        while 1:
+            try:
+                conversation = pickle.load(f)
+            except EOFError:
+                break
+            conversation_list.append(conversation)
+    return conversation_list
 
 # Setting the credentials
 credentials = import_credentials('credentials.txt')
@@ -90,13 +100,15 @@ if __name__ == '__main__':
 
     
     while True:
-        threading.Thread(target=save, args=([next_conversation()]), daemon=True).start()
-    with open("text.pickle", "rb") as f:
+        threading.Thread(target=save, args=([next_conversation()], "text.pickle"), daemon=True).start()
+        x = get_conversations('text.pickle')
+        print(x)
+    '''with open("text.pickle", "rb") as f:
         for i in range(10):
             print(pickle.load(f))
 
-''''''
-
+'''
+# EXCEPT PICKLE OUTPUT ERR: EOFError:
 
     #with open('output.pickle', 'rb') as output:
     #   itemlist = pickle.load(output)
