@@ -9,6 +9,9 @@ import queue
 import threading
 import pickle
 import time
+from tkinter import *
+from tkinter import ttk
+
 from threading import Timer
 from tweepy import Stream
 from tweepy.streaming import StreamListener
@@ -26,9 +29,9 @@ API_secret = credentials['app_secret']
 OAUTH_token = credentials['oauth_token']
 OAUTH_token_secret = credentials['oauth_token_secret']
 
-class RawConversations():
+class RawConversations(Frame):
 
-    def __init__(self, queue, listener):
+    def __init__(self, queue, listener, parent):
         self.queue = q
         self.listener = listener
 
@@ -38,10 +41,16 @@ class RawConversations():
         self.auth.set_access_token(OAUTH_token, OAUTH_token_secret)
         self.api = tweepy.API(self.auth)
         self.stream = Stream(self.auth, listener)
-        self.stream.filter(track=["why"],languages=['en'], async=True)
+        self.stream.filter(track=["gargano"],languages=['en'], is_async=True)
             
         self.thread = threading.Thread(target=self.run, daemon=True).start()
         self.thread2 = threading.Thread(target=self.conversation_queue, daemon=True).start()
+
+        Frame.__init__(self, parent)
+        self.parent = parent
+        self.tree = ttk.Treeview(self.parent)
+        self.tree.column("#0", width = 700)
+        self.tree.pack()
 
     def run(self):
         while True:
@@ -77,7 +86,7 @@ class RawConversations():
                         newline = json.loads(line)
                         if newline['in_reply_to_status_id']:
                             self.queue.put(newline)
-                    except KeyError:
+                    except:
                         pass
         except FileNotFoundError:
             pass
@@ -108,13 +117,24 @@ class RawConversations():
             time.sleep(4)
 
 
+    def show_convo(self, conversation_list):
+        for connum, con in enumerate(conversation_list):
+            for i, tweet in enumerate(con):
+                try:
+                    if i == 0:
+                        self.tree.insert("","end",connum,text=tweet)
+                    else:
+                        self.tree.insert(connum, "end", text=tweet)
+                except:
+                    pass
+
 
 # Basic listener, prints the stream to std output
 class Listener(StreamListener):
     def __init__(self, queue):
         super(Listener, self).__init__()
         self.queue = queue
-    
+
     def on_data(self, data):
         with open('text1.txt', 'a') as output:
             output.write(data)
@@ -123,15 +143,35 @@ class Listener(StreamListener):
     def on_error(self, status):
         print(status)
 
-def print_conversation_list(x):
-    print(x.conversation_queue())
+def main():
+    # Interface
+    root = Tk()
+    root.title("Comment Tree Display")
+    root.geometry("800x600")
+    root.option_add("*tearOff", False)
+
+    # Menu bar
+    menubar = Menu(root)
+    comment_tree = RawConversations(root, listener, parent=None)
+    convo = comment_tree.show_convo(comment_tree.conversation_queue())
+    # File menu
+    filemenu = Menu(menubar, tearoff=0)
+    filemenu.add_command(label="Exit", command=root.quit)
+    menubar.add_cascade(label="File", menu=filemenu)
+
+    # Processing menu
+    procmenu = Menu(menubar, tearoff=0)
+    menubar.add_cascade(label="Processing", menu=procmenu)
+
+    root.config(menu=menubar)
+    root.mainloop()
+    print(comment_tree.conversation_queue()[0])
+
 
 if __name__ == '__main__':
     q = queue.Queue()
     listener = Listener(q)
-    x=RawConversations(q, listener)
-    print(x.conversation_queue())
-
+    main()
 
 # EXCEPT PICKLE OUTPUT ERR: EOFError:
 
