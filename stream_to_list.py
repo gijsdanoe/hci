@@ -9,6 +9,8 @@ import queue
 import threading
 import pickle
 import time
+import geopy
+from geopy.geocoders import Yandex
 from tkinter import *
 from tkinter import ttk
 from tkinter import simpledialog
@@ -55,7 +57,7 @@ class RawConversations(Frame):
         self.text_var = StringVar()
         self.status_label = Label(self.parent, textvariable=self.text_var).pack()
         self.text_var.set("Click on update in order to receive conversations")
-        self.pause_button = Button(self.parent, text="Update", command=self.file_streamer).pack()
+        self.pause_button = Button(self.parent, text="Update", command=self.update).pack()
 
     def ask_filter(self):
         word=simpledialog.askstring("Input", "What word are you looking for?")
@@ -78,9 +80,13 @@ class RawConversations(Frame):
             self.ask_filter()
 
     def file_streamer(self):
-        if q.empty():
-            self.setQueue()
-        self.update()
+        try:
+            if q.empty():
+                self.setQueue()
+            self.update()
+        except:
+            self.tree.insert("", "0", text="Not enough tweets available...")
+            pass
         
     # Go to next conversation
     def next_conversation(self):
@@ -145,16 +151,16 @@ class RawConversations(Frame):
             for i in self.tree.get_children():
                 self.tree.delete(i)
             for connum, con in enumerate(conversation_list):
-                for i, tweet in enumerate(con):
-                    try:
+                try:
+                    for i, tweet in enumerate(con):
                         if connum == 0:
                             pass
                         if i == 0 and connum >= 1:
                             self.tree.insert("","0",connum,text=tweet)
                         if i > 0:
                             self.tree.insert(connum, "end",text=tweet)
-                    except:
-                        pass
+                except:
+                    pass
         except TypeError:
             self.file_streamer()
 
