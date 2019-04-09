@@ -83,13 +83,10 @@ class RawConversations():
             pass
 
     def save(self, conversation):
-        try:
-            if 3 <= len(conversation) <= 10:
-                with open("text.pickle", "ab") as f:
-                    pickle.dump(conversation, f)
-            else:
-                pass
-        except FileNotFoundError:
+        if 3 <= len(conversation) <= 10:
+            with open("text.pickle", "ab") as f:
+                pickle.dump(conversation, f)
+        else:
             pass
 
 
@@ -104,7 +101,7 @@ class RawConversations():
                     except EOFError:
                         break
         except FileNotFoundError:
-            time.sleep(4)
+            self.save(self.next_conversation())
 
 
 

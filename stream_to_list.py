@@ -11,7 +11,7 @@ import pickle
 import time
 from tkinter import *
 from tkinter import ttk
-
+from tkinter import simpledialog
 from threading import Timer
 from tweepy import Stream
 from tweepy.streaming import StreamListener
@@ -32,16 +32,17 @@ OAUTH_token_secret = credentials['oauth_token_secret']
 class RawConversations(Frame):
 
     def __init__(self, queue, listener, parent):
+        super(RawConversations, self).__init__()
         self.queue = q
         self.listener = listener
+        self.filter = False
+        self.filters = ""
 
         self.setQueue()
 
         self.auth = tweepy.OAuthHandler(API_key, API_secret)
         self.auth.set_access_token(OAUTH_token, OAUTH_token_secret)
         self.api = tweepy.API(self.auth)
-        self.stream = Stream(self.auth, listener)
-        self.stream.filter(track=["gargano"],languages=['en'], is_async=True)
             
         self.thread = threading.Thread(target=self.run, daemon=True).start()
         self.thread2 = threading.Thread(target=self.conversation_queue, daemon=True).start()
@@ -51,11 +52,36 @@ class RawConversations(Frame):
         self.tree = ttk.Treeview(self.parent)
         self.tree.column("#0", width = 700)
         self.tree.pack()
+        self.text_var = StringVar()
+        self.status_label = Label(self.parent, textvariable=self.text_var).pack()
+        self.text_var.set("Click on update in order to receive conversations")
+        self.pause_button = Button(self.parent, text="Update", command=self.file_streamer).pack()
 
+    def ask_filter(self):
+        word=simpledialog.askstring("Input", "What word are you looking for?")
+        lang=simpledialog.askstring("Input", "What language do you want?")
+        self.stream = Stream(self.auth, listener)
+        self.stream.filter(track=[word],languages=[lang], async=True)
+        self.filter = True
+        self.filters += word + lang
+        self.text_var.set("Buffering, please wait a few seconds and update the tree...")
+    
     def run(self):
         while True:
-            self.save(self.next_conversation())
+           self.save(self.next_conversation())
 
+    def update(self):
+        if self.filter == True:
+            self.show_convo(self.conversation_queue())
+            self.text_var.set("Click on update to receive more conversations")
+        else:
+            self.ask_filter()
+
+    def file_streamer(self):
+        if q.empty():
+            self.setQueue()
+        self.update()
+        
     # Go to next conversation
     def next_conversation(self):
         q1 = self.queue.get()
@@ -92,20 +118,17 @@ class RawConversations(Frame):
             pass
 
     def save(self, conversation):
-        try:
-            if 3 <= len(conversation) <= 10:
-                with open("text.pickle", "ab") as f:
-                    pickle.dump(conversation, f)
-            else:
-                pass
-        except FileNotFoundError:
-            pass
+        if 3 <= len(conversation) <= 10:
+            with open(self.filters+'.pickle', "ab") as f:
+                pickle.dump(conversation, f)
+        else:
+            self.save(self.next_conversation())
 
 
     def conversation_queue(self):
         conversation_list = []
         try:
-            with open("text.pickle", "rb") as f:
+            with open(self.filters+".pickle", "rb") as f:
                 while 1:
                     try:
                         conversation = pickle.load(f)
@@ -114,19 +137,26 @@ class RawConversations(Frame):
                         break
             return conversation_list
         except FileNotFoundError:
-            time.sleep(4)
+            pass
 
 
     def show_convo(self, conversation_list):
-        for connum, con in enumerate(conversation_list):
-            for i, tweet in enumerate(con):
-                try:
-                    if i == 0:
-                        self.tree.insert("","end",connum,text=tweet)
-                    else:
-                        self.tree.insert(connum, "end", text=tweet)
-                except:
-                    pass
+        try:
+            for i in self.tree.get_children():
+                self.tree.delete(i)
+            for connum, con in enumerate(conversation_list):
+                for i, tweet in enumerate(con):
+                    try:
+                        if connum == 0:
+                            pass
+                        if i == 0 and connum >= 1:
+                            self.tree.insert("","0",connum,text=tweet)
+                        if i > 0:
+                            self.tree.insert(connum, "end",text=tweet)
+                    except:
+                        pass
+        except TypeError:
+            self.file_streamer()
 
 
 # Basic listener, prints the stream to std output
@@ -152,8 +182,8 @@ def main():
 
     # Menu bar
     menubar = Menu(root)
-    comment_tree = RawConversations(root, listener, parent=None)
-    convo = comment_tree.show_convo(comment_tree.conversation_queue())
+    comment_tree = RawConversations(root, listener, root)
+    #convo = comment_tree.show_convo(comment_tree.conversation_queue())
     # File menu
     filemenu = Menu(menubar, tearoff=0)
     filemenu.add_command(label="Exit", command=root.quit)
@@ -165,7 +195,6 @@ def main():
 
     root.config(menu=menubar)
     root.mainloop()
-    print(comment_tree.conversation_queue()[0])
 
 
 if __name__ == '__main__':
