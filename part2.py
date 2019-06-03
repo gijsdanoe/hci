@@ -33,52 +33,40 @@ class ResponseTreeDisplay(tk.Frame):
 
     def get_url(self):
         dir = os.getcwd()
-        filedialog.asksaveasfilename(initialdir = dir,title = "Select file",filetypes = (("pickle files","*.pickle"),("all files","*.*")))
+        filename = filedialog.askopenfilename(initialdir = dir,title = "Select file",filetypes = (("pickle files","*.pickle"),("all files","*.*")))
+        return filename
 
-    def show_comments(self, url):
-        # Sends all Comments to add_to_tree Function
-        self.clear_tree()
-        self.url = url
-        submission = self.reddit.submission(url=url)
-        submission.comments.replace_more(limit=None)
-        self.count = self.get_replies_count(submission.comments, 0)
-        for comment in submission.comments:
-            self.add_to_tree(comment)
-
-    def get_replies_count(self, comments, count):
-        for comment in comments:
-            count += 1
-            reps = comment.replies
-            if reps:
-                count = self.get_replies_count(reps, count)
-        return count
-
-    def add_to_tree(self, comment):
-        # Adds 'comment' to Tree
+    def conversation_queue(self, filename):
+        conversation_list = []
         try:
-            self.tree.insert('', 'end', id=self.id, values=[comment.body])
-            if comment.replies:
-                self.get_subs(comment, self.id)
-            self.id += 1
-        except:             # Smileys are a struggle...
+            with open(filename, "rb") as f:
+                while 1:
+                    try:
+                        conversation = filename.load(f)
+                        conversation_list.append(conversation)
+                    except EOFError:
+                        break
+                return conversation_list
+        except FileNotFoundError:
             pass
 
-    def get_subs(self, comment, id):
-        # Gets Possible Responses to Comments
-        id2 = 0
-        for reply in comment.replies:
-            did = str(id)+str('.')+str(id2)
-            try:
-                self.tree.insert(id, 'end', id=did, values=[reply.body])
-                if reply.replies:
-                    self.get_subs(reply, did)
-            except:
-                pass
-            id2 += 1
-
-    def clear_tree(self):
-        # Clears Tree
-        self.tree.delete(*self.tree.get_children())
+    def show_convo(self, conversation_list):
+        try:
+            for i in self.tree.get_children():
+                self.tree.delete(i)
+            for connum, con in enumerate(conversation_list):
+                try:
+                    for i, tweet in enumerate(con):
+                        if connum == 0:
+                            pass
+                        if i == 0 and connum >= 1:
+                            self.tree.insert("", "0", connum, text=tweet)
+                        if i > 0:
+                            self.tree.insert(connum, "end", text=tweet)
+                except:
+                    pass
+        except TypeError:
+            pass
 
 
 
