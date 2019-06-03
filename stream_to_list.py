@@ -10,6 +10,7 @@ import threading
 import pickle
 import time
 import geopy
+import os
 from geopy.geocoders import Yandex
 from tkinter import *
 from tkinter import ttk
@@ -18,11 +19,13 @@ from threading import Timer
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 
+
 # Import credentials from text file
 def import_credentials(txt):
     with open(txt,'r') as f:
         credentials = eval(f.read())
     return credentials
+
 
 # Setting the credentials
 credentials = import_credentials('credentials.txt')
@@ -30,6 +33,7 @@ API_key = credentials['app_key']
 API_secret = credentials['app_secret']
 OAUTH_token = credentials['oauth_token']
 OAUTH_token_secret = credentials['oauth_token_secret']
+
 
 class RawConversations(Frame):
 
@@ -59,6 +63,7 @@ class RawConversations(Frame):
         self.text_var.set("Click on update in order to receive conversations")
         self.pause_button = Button(self.parent, text="Update", command=self.update).pack()
 
+
     def ask_filter(self):
         word=simpledialog.askstring("Input", "What word are you looking for?")
         lang=simpledialog.askstring("Input", "What language do you want?")
@@ -67,10 +72,12 @@ class RawConversations(Frame):
         self.filter = True
         self.filters += word + lang
         self.text_var.set("Buffering, please wait a few seconds and update the tree...")
+
     
     def run(self):
         while True:
            self.save(self.next_conversation())
+
 
     def update(self):
         if self.filter == True:
@@ -78,6 +85,7 @@ class RawConversations(Frame):
             self.text_var.set("Click on update to receive more conversations")
         else:
             self.ask_filter()
+
 
     def file_streamer(self):
         try:
@@ -87,12 +95,14 @@ class RawConversations(Frame):
         except:
             self.tree.insert("", "0", text="Not enough tweets available...")
             pass
+
         
     # Go to next conversation
     def next_conversation(self):
         q1 = self.queue.get()
         q1_reply = q1['in_reply_to_status_id']
         return self.check_reply(q1_reply, [q1['text']])
+
 
     # Check the replies
     def check_reply(self, q1_reply_id, list_replies):
@@ -110,6 +120,7 @@ class RawConversations(Frame):
         except tweepy.error.TweepError:
             return ["This Twitter conversation is private"]
 
+
     def setQueue(self):
         try:
             with open('text1.txt', 'r') as output:
@@ -123,10 +134,14 @@ class RawConversations(Frame):
         except FileNotFoundError:
             pass
 
+
     def save(self, conversation):
         if 3 <= len(conversation) <= 10:
-            with open(self.filters+'.pickle', "ab") as f:
-                pickle.dump(conversation, f)
+            if self.filters != "":
+                with open(self.filters+'.pickle', "ab") as f:
+                    pickle.dump(conversation, f)
+            else:
+                pass
         else:
             self.save(self.next_conversation())
 
@@ -141,7 +156,7 @@ class RawConversations(Frame):
                         conversation_list.append(conversation)
                     except EOFError:
                         break
-            return conversation_list
+                return conversation_list
         except FileNotFoundError:
             pass
 
@@ -179,6 +194,7 @@ class Listener(StreamListener):
     def on_error(self, status):
         print(status)
 
+
 def main():
     # Interface
     root = Tk()
@@ -204,9 +220,18 @@ def main():
 
 
 if __name__ == '__main__':
+    path = os.getcwd()
+    for item in os.listdir(path):
+        if item.endswith(".pickle"):
+            os.remove(item)
+    try:
+        os.remove("text1.txt")
+    except FileNotFoundError:
+        pass
     q = queue.Queue()
     listener = Listener(q)
     main()
+
 
 # EXCEPT PICKLE OUTPUT ERR: EOFError:
 
