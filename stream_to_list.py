@@ -68,7 +68,7 @@ class RawConversations(Frame):
         word=simpledialog.askstring("Input", "What word are you looking for?")
         lang=simpledialog.askstring("Input", "What language do you want?")
         self.stream = Stream(self.auth, listener)
-        self.stream.filter(track=[word],languages=[lang], async=True)
+        self.stream.filter(track=[word],languages=[lang], is_async=True)
         self.filter = True
         self.filters += word + lang
         self.text_var.set("Buffering, please wait a few seconds and update the tree...")
