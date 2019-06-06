@@ -11,7 +11,7 @@ import pickle
 import time
 import geopy
 import os
-from geopy.geocoders import Yandex
+from geopy.geocoders import Nominatim
 from tkinter import *
 from tkinter import ttk
 from tkinter import simpledialog
@@ -59,6 +59,7 @@ class RawConversations(Frame):
         self.tree.column("#0", width = 700)
         self.tree.pack()
         self.text_var = StringVar()
+        #self.loc_button = Button(self.parent, text="Location", command=self.location)
         self.status_label = Label(self.parent, textvariable=self.text_var).pack()
         self.text_var.set("Click on update in order to receive conversations")
         self.pause_button = Button(self.parent, text="Update", command=self.update).pack()
@@ -68,11 +69,32 @@ class RawConversations(Frame):
         word=simpledialog.askstring("Input", "What word are you looking for?")
         lang=simpledialog.askstring("Input", "What language do you want?")
         self.stream = Stream(self.auth, listener)
-        self.stream.filter(track=[word],languages=[lang], is_async=True)
+        self.stream.filter(track=[word],languages=[lang], async=True)
         self.filter = True
         self.filters += word + lang
         self.text_var.set("Buffering, please wait a few seconds and update the tree...")
+        self.loc_button.pack()
 
+        '''
+    def location(self):
+        self.stream.disconnect()
+        location=simpledialog.askstring("Input", "Type in a city/country?")
+        radius=simpledialog.askstring("Input", "What is the radius of your location in kilometres?")
+        geolocator = Nominatim(user_agent="HCI_analyzer")
+        geo_location = geolocator.geocode(location)
+        coords = '{0},{1},{2}km'.format(geo_location.latitude, geo_location.longitude,radius)
+        word=simpledialog.askstring("Input", "What word are you looking for?")
+        language=simpledialog.askstring("Input", "What language do you want?")
+        with self.queue.mutex:
+            q.queue.clear()
+        for status in tweepy.Cursor(self.api.search,q=word, lang=language, geocode=coords).items(10):
+            with open('text2.txt', 'a') as output:
+                output.write(str(status._json))
+        self.setQueue2()
+        self.update()
+        '''
+            
+        
     
     def run(self):
         while True:
@@ -133,6 +155,21 @@ class RawConversations(Frame):
                         pass
         except FileNotFoundError:
             pass
+
+    '''
+    def setQueue2(self):
+        try:
+            with open('text2.txt', 'r') as output:
+                for line in output:
+                    try:
+                        newline = json.loads(line)
+                        if newline['in_reply_to_status_id']:
+                            self.queue.put(newline)
+                    except:
+                        pass
+        except FileNotFoundError:
+            pass
+    '''
 
 
     def save(self, conversation):
