@@ -45,7 +45,7 @@ class ResponseTreeDisplay(tk.Frame):
                 while 1:
                     try:
                         conversation = pickle.load(f)
-                        self.conversation_list.append(conversation)
+                        self.conversation_list.append(conversation[0])
                     except EOFError:
                         break
         except FileNotFoundError:
@@ -120,7 +120,7 @@ def main():
     # Adds Menu2 to Menubar
     menubar.add_cascade(label='File', menu=menu2)
     b = Button(root, text='Filter', command=a.filteredall)
-    b.pack(anchor='e')
+    b.pack()
     # Adds Menubar to Root
     root.config(menu=menubar)
 
