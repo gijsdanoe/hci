@@ -75,18 +75,27 @@ class ResponseTreeDisplay(tk.Frame):
     def filteredall(self):
 
         analyser = SentimentIntensityAnalyzer()
-        sentdict = {}
+        sentdictlist = []
         for i in self.conversation_list:
-
+            sentdict = {}
             for j in i:
                 sentdict[j] = analyser.polarity_scores(j)['compound']
+            sentdictlist.append(sentdict)
+        print(sentdictlist)
 
-        self.conversation_list = []
-        for key, value in sentdict.items():
+        for sentdict in sentdictlist:
+            valuelist = []
+            for key, value in sentdict.items():
+                valuelist.append(value)
 
-            if value > self.w.get():
-                self.conversation_list.append(key)
-        print(self.conversation_list)
+            print(sum(valuelist)/len(valuelist))
+            for key,value in sentdict.items():
+                if value < self.w.get():
+                    for item in self.conversation_list:
+                        if key in item:
+                            self.conversation_list.remove(item)
+
+
         self.show_convo(self.conversation_list)
 
 
