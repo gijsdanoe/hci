@@ -4,9 +4,13 @@ import praw
 from tkinter import simpledialog
 import threading
 from tkinter import messagebox
+from tkinter import Scale
 from tkinter import filedialog
+from tkinter import HORIZONTAL
+from tkinter import Button
 import os
 import pickle
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 class ResponseTreeDisplay(tk.Frame):
 
@@ -23,6 +27,8 @@ class ResponseTreeDisplay(tk.Frame):
         # Place & Configure Treeview
         self.tree.place(relx=0.5, y=200, anchor='center')
         self.tree.configure(yscrollcommand=sb.set)
+        self.w = Scale(self.root, from_=0, to=1, resolution=0.1, tickinterval=0.5, orient=HORIZONTAL)
+        self.w.pack()
         self.conversation_list = []
         self.filename = ''
 
@@ -64,10 +70,24 @@ class ResponseTreeDisplay(tk.Frame):
         self.get_url()
         self.conversation_queue(self.filename)
         self.show_convo(self.conversation_list)
-        t1 = threading.Thread(target=self.show_convo(self.conversation_list), args=[self.filename])
-        t1.daemon = True
-        t1.start()
-        print(t1)
+        print(self.w.get())
+
+    def filteredall(self):
+
+        analyser = SentimentIntensityAnalyzer()
+        sentdict = {}
+        for i in self.conversation_list:
+
+            for j in i:
+                sentdict[j] = analyser.polarity_scores(j)['compound']
+
+        self.conversation_list = []
+        for key, value in sentdict.items():
+
+            if value > self.w.get():
+                self.conversation_list.append(key)
+        print(self.conversation_list)
+        self.show_convo(self.conversation_list)
 
 
 
@@ -85,8 +105,11 @@ def main():
     menu2.add_command(label='Open', command=a.all)
     # Adds Menu2 to Menubar
     menubar.add_cascade(label='File', menu=menu2)
+    b = Button(root, text='Filter', command=a.filteredall)
+    b.pack()
     # Adds Menubar to Root
     root.config(menu=menubar)
+
     root.mainloop()
 
 if __name__ == '__main__':

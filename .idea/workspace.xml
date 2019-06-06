@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="548fc62a-a953-434b-ba7b-1f885a57a8e2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/part2.py" beforeDir="false" afterPath="$PROJECT_DIR$/part2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,10 +16,10 @@
     <SUITE FILE_PATH="coverage/HCI$part5.coverage" NAME="part5 Coverage Results" MODIFIED="1551470995011" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HCI$lab2.coverage" NAME="lab2 Coverage Results" MODIFIED="1551351781488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hciresit$part5__1_.coverage" NAME="part5 (1) Coverage Results" MODIFIED="1559562393543" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735" />
-    <SUITE FILE_PATH="coverage/hciresit$part2.coverage" NAME="part2 Coverage Results" MODIFIED="1559565412007" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/hciresit$part2.coverage" NAME="part2 Coverage Results" MODIFIED="1559826831949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HCI$part3.coverage" NAME="part3 Coverage Results" MODIFIED="1551481402182" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/HCI$incomingsubmissions.coverage" NAME="incomingsubmissions Coverage Results" MODIFIED="1551351280386" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/hciresit$part2__1_.coverage" NAME="part2 (1) Coverage Results" MODIFIED="1559562418470" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735" />
+    <SUITE FILE_PATH="coverage/hciresit$part2__1_.coverage" NAME="part2 (1) Coverage Results" MODIFIED="1559566070697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735" />
     <SUITE FILE_PATH="coverage/HCI$part1.coverage" NAME="part1 Coverage Results" MODIFIED="1551350353588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hciresit$stream_to_list.coverage" NAME="stream_to_list Coverage Results" MODIFIED="1559559416436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/hciresit$part4__1_.coverage" NAME="part4 (1) Coverage Results" MODIFIED="1559562653721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735" />
@@ -29,8 +30,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stream_to_list.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="179" column="32" lean-forward="true" selection-start-line="148" selection-start-column="1" selection-end-line="179" selection-end-column="32" />
+            <state relative-caret-position="510">
+              <caret line="144" selection-start-line="144" selection-end-line="144" />
+              <folding>
+                <element signature="e#140#150#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -38,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/part2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-170">
-              <caret line="59" column="39" lean-forward="true" selection-start-line="59" selection-start-column="39" selection-end-line="59" selection-end-column="39" />
+            <state relative-caret-position="246">
+              <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -51,7 +55,7 @@
         <entry file="file://$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735/part4.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="24" column="36" lean-forward="true" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+              <caret line="24" column="36" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
@@ -62,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735/part2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="84" column="20" lean-forward="true" selection-end-line="118" />
+            <state relative-caret-position="187">
+              <caret line="44" selection-start-line="44" selection-end-line="44" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -86,7 +90,7 @@
         <entry file="file://$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735/part5.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -286,8 +290,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.part2" />
-        <item itemvalue="Python.part4 (1)" />
         <item itemvalue="Python.part2 (1)" />
+        <item itemvalue="Python.part4 (1)" />
         <item itemvalue="Python.part5 (1)" />
         <item itemvalue="Python.stream_to_list" />
       </list>
@@ -307,7 +311,7 @@
       <workItem from="1551351262030" duration="5023000" />
       <workItem from="1551470816883" duration="4275000" />
       <workItem from="1551483035096" duration="212000" />
-      <workItem from="1559558798490" duration="4368000" />
+      <workItem from="1559558798490" duration="16431000" />
     </task>
     <task id="LOCAL-00001" summary="part2">
       <created>1559563912561</created>
@@ -316,11 +320,25 @@
       <option name="project" value="LOCAL" />
       <updated>1559563912561</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="part2 fix">
+      <created>1559565781378</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1559565781378</updated>
+    </task>
+    <task id="LOCAL-00003" summary="part2 fix 1">
+      <created>1559822396935</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1559822396979</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20693000" />
+    <option name="totallyTimeSpent" value="32756000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -337,7 +355,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.10638298" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.500821" side_tool="true" weight="0.32928944" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49917898" weight="0.32928944" />
@@ -354,7 +372,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="part2" />
-    <option name="LAST_COMMIT_MESSAGE" value="part2" />
+    <MESSAGE value="part2 fix" />
+    <MESSAGE value="part2 fix 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="part2 fix 1" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/hc.py" />
@@ -382,19 +402,9 @@
     <entry file="file://$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735/part5.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735/part4.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="24" column="36" lean-forward="true" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -408,10 +418,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735/part4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="24" column="36" selection-start-line="24" selection-start-column="36" selection-end-line="24" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/Documents/Informatiekunde/Human Computer Interaction/lab1_s3469735/part2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="84" column="20" lean-forward="true" selection-end-line="118" />
+        <state relative-caret-position="187">
+          <caret line="44" selection-start-line="44" selection-end-line="44" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -420,15 +440,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/stream_to_list.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="179" column="32" lean-forward="true" selection-start-line="148" selection-start-column="1" selection-end-line="179" selection-end-column="32" />
+        <state relative-caret-position="510">
+          <caret line="144" selection-start-line="144" selection-end-line="144" />
+          <folding>
+            <element signature="e#140#150#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/part2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-170">
-          <caret line="59" column="39" lean-forward="true" selection-start-line="59" selection-start-column="39" selection-end-line="59" selection-end-column="39" />
+        <state relative-caret-position="246">
+          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
