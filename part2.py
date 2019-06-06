@@ -7,7 +7,9 @@ from tkinter import messagebox
 from tkinter import Scale
 from tkinter import filedialog
 from tkinter import HORIZONTAL
+from tkinter import RIGHT
 from tkinter import Button
+from tkinter import Label
 import os
 import pickle
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -27,7 +29,8 @@ class ResponseTreeDisplay(tk.Frame):
         # Place & Configure Treeview
         self.tree.place(relx=0.5, y=200, anchor='center')
         self.tree.configure(yscrollcommand=sb.set)
-        self.w = Scale(self.root, from_=0, to=1, resolution=0.1, tickinterval=0.5, orient=HORIZONTAL)
+        self.label = Label(self.root, text="Sentiment score").pack()
+        self.w = Scale(self.root, from_=-1, to=1, resolution=0.1, tickinterval=1, orient=HORIZONTAL)
         self.w.pack()
         self.conversation_list = []
         self.filename = ''
@@ -81,22 +84,24 @@ class ResponseTreeDisplay(tk.Frame):
             for j in i:
                 sentdict[j] = analyser.polarity_scores(j)['compound']
             sentdictlist.append(sentdict)
-        print(sentdictlist)
 
-        for sentdict in sentdictlist:
+        sentdictlistdict = {}
+        for i,sentdict in enumerate(sentdictlist):
             valuelist = []
             for key, value in sentdict.items():
                 valuelist.append(value)
 
-            print(sum(valuelist)/len(valuelist))
-            for key,value in sentdict.items():
-                if value < self.w.get():
-                    for item in self.conversation_list:
-                        if key in item:
-                            self.conversation_list.remove(item)
+            avgvalue = sum(valuelist) / len(valuelist)
+            sentdictlistdict[i] = avgvalue
 
-
-        self.show_convo(self.conversation_list)
+        newconvolist = []
+        for i, (key, value) in enumerate(sentdictlistdict.items()):
+            if value < self.w.get():
+                for j, item in enumerate(self.conversation_list):
+                    if i == j:
+                        newconvolist.append(item)
+        print(sentdictlistdict)
+        self.show_convo(newconvolist)
 
 
 
@@ -115,7 +120,7 @@ def main():
     # Adds Menu2 to Menubar
     menubar.add_cascade(label='File', menu=menu2)
     b = Button(root, text='Filter', command=a.filteredall)
-    b.pack()
+    b.pack(anchor='e')
     # Adds Menubar to Root
     root.config(menu=menubar)
 
