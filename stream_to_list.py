@@ -26,6 +26,8 @@ def import_credentials(txt):
         credentials = eval(f.read())
     return credentials
 
+def deEmojify(inputString):
+    return inputString.encode('ascii', 'ignore').decode('ascii')
 
 # Setting the credentials
 credentials = import_credentials('credentials.txt')
@@ -74,26 +76,6 @@ class RawConversations(Frame):
         self.filters += word + lang
         self.text_var.set("Buffering, please wait a few seconds and update the tree...")
         #self.loc_button.pack()
-
-        '''
-    def location(self):
-        self.stream.disconnect()
-        location=simpledialog.askstring("Input", "Type in a city/country?")
-        radius=simpledialog.askstring("Input", "What is the radius of your location in kilometres?")
-        geolocator = Nominatim(user_agent="HCI_analyzer")
-        geo_location = geolocator.geocode(location)
-        coords = '{0},{1},{2}km'.format(geo_location.latitude, geo_location.longitude,radius)
-        word=simpledialog.askstring("Input", "What word are you looking for?")
-        language=simpledialog.askstring("Input", "What language do you want?")
-        with self.queue.mutex:
-            q.queue.clear()
-        for status in tweepy.Cursor(self.api.search,q=word, lang=language, geocode=coords).items(10):
-            with open('text2.txt', 'a') as output:
-                output.write(str(status._json))
-        self.setQueue2()
-        self.update()
-        '''
-            
         
     
     def run(self):
@@ -123,22 +105,28 @@ class RawConversations(Frame):
     def next_conversation(self):
         q1 = self.queue.get()
         q1_reply = q1['in_reply_to_status_id']
-        return self.check_reply(q1_reply, [q1['text']])
+        q1_user = q1['user']['id']
+        return self.check_reply(q1_reply, [q1['text']], [q1_user])
 
 
     # Check the replies
-    def check_reply(self, q1_reply_id, list_replies):
+    def check_reply(self, q1_reply_id, list_replies, user_list):
         try:
+            user_ids = user_list
             reply_list = list_replies
             reply = self.api.get_status(q1_reply_id)
             text = reply.text
+            user=reply.user
+            user_id = user.id
+            if user_id not in user_ids:
+                user_ids.append(user_id)
             reply_list.append(text)
             new_id = reply.in_reply_to_status_id
             if new_id != None:
-                self.check_reply(new_id, reply_list)
+                self.check_reply(new_id, reply_list, user_ids)
             else:
                 pass
-            return reply_list[::-1]
+            return [reply_list[::-1], len(user_ids)]
         except tweepy.error.TweepError:
             return ["This Twitter conversation is private"]
 
@@ -156,27 +144,16 @@ class RawConversations(Frame):
         except FileNotFoundError:
             pass
 
-    '''
-    def setQueue2(self):
-        try:
-            with open('text2.txt', 'r') as output:
-                for line in output:
-                    try:
-                        newline = json.loads(line)
-                        if newline['in_reply_to_status_id']:
-                            self.queue.put(newline)
-                    except:
-                        pass
-        except FileNotFoundError:
-            pass
-    '''
 
-
-    def save(self, conversation):
-        if 3 <= len(conversation) <= 10:
+    def save(self, conversations):
+        conversation = conversations[0]
+        unique_users = conversation[1]
+        conversation_length = len(conversation)
+        clean_conversation = [deEmojify(i) for i in conversation]            
+        if 3 <= conversation_length <= 10:
             if self.filters != "":
                 with open(self.filters+'.pickle', "ab") as f:
-                    pickle.dump(conversation, f)
+                    pickle.dump((clean_conversation, conversation_length, unique_users), f)
             else:
                 pass
         else:
@@ -190,7 +167,7 @@ class RawConversations(Frame):
                 while 1:
                     try:
                         conversation = pickle.load(f)
-                        conversation_list.append(conversation)
+                        conversation_list.append(conversation[0])
                     except EOFError:
                         break
                 return conversation_list
@@ -268,10 +245,3 @@ if __name__ == '__main__':
     q = queue.Queue()
     listener = Listener(q)
     main()
-
-
-# EXCEPT PICKLE OUTPUT ERR: EOFError:
-
-    #with open('output.pickle', 'rb') as output:
-    #   itemlist = pickle.load(output)
-        
