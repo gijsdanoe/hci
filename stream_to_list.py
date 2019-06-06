@@ -73,7 +73,7 @@ class RawConversations(Frame):
         self.filter = True
         self.filters += word + lang
         self.text_var.set("Buffering, please wait a few seconds and update the tree...")
-        self.loc_button.pack()
+        #self.loc_button.pack()
 
         '''
     def location(self):
