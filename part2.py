@@ -6,6 +6,7 @@ import threading
 from tkinter import messagebox
 from tkinter import filedialog
 import os
+import pickle
 
 class ResponseTreeDisplay(tk.Frame):
 
@@ -13,40 +14,31 @@ class ResponseTreeDisplay(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.root = parent
         # Get Treeview
-        self.tree = ttk.Treeview(self.root, columns='comment', show=('tree', 'headings'))
-        # Get Heading: Comment
-        self.tree.heading('comment', text='Comment')
-        self.tree.column('comment', width=750, stretch='no')
-        # Modify Tree
-        self.tree.column('#0', width=150, stretch='no')
+        self.tree = ttk.Treeview(self.root)
+        self.tree.column("#0", width=700)
+        self.tree.heading('#0', text='Conversations')
         # Get Vertical Scrollbar for Treeview
         sb = tk.Scrollbar(self.root, orient="vertical", command=self.tree.yview)
         sb.place(x=942, y=200, height=225, anchor='center')
         # Place & Configure Treeview
         self.tree.place(relx=0.5, y=200, anchor='center')
         self.tree.configure(yscrollcommand=sb.set)
-        # Set Id for Items
-        self.id = 0
-        self.count = 0
-        self.url = None
-
+        self.conversation_list = []
+        self.filename = ''
 
     def get_url(self):
         dir = os.getcwd()
-        filename = filedialog.askopenfilename(initialdir = dir,title = "Select file",filetypes = (("pickle files","*.pickle"),("all files","*.*")))
-        return filename
+        self.filename = filedialog.askopenfilename(initialdir = dir,title = "Select file",filetypes = (("pickle files","*.pickle"),("all files","*.*")))
 
     def conversation_queue(self, filename):
-        conversation_list = []
         try:
             with open(filename, "rb") as f:
                 while 1:
                     try:
-                        conversation = filename.load(f)
-                        conversation_list.append(conversation)
+                        conversation = pickle.load(f)
+                        self.conversation_list.append(conversation)
                     except EOFError:
                         break
-                return conversation_list
         except FileNotFoundError:
             pass
 
@@ -68,6 +60,15 @@ class ResponseTreeDisplay(tk.Frame):
         except TypeError:
             pass
 
+    def all(self):
+        self.get_url()
+        self.conversation_queue(self.filename)
+        self.show_convo(self.conversation_list)
+        t1 = threading.Thread(target=self.show_convo(self.conversation_list), args=[self.filename])
+        t1.daemon = True
+        t1.start()
+        print(t1)
+
 
 
 def main():
@@ -81,13 +82,12 @@ def main():
     menubar = tk.Menu(root)
     # Creates Menu 'File' with Item 'Exit'
     menu2 = tk.Menu(menubar, tearoff=0)
-    menu2.add_command(label='Open', command=a.get_url)
+    menu2.add_command(label='Open', command=a.all)
     # Adds Menu2 to Menubar
     menubar.add_cascade(label='File', menu=menu2)
     # Adds Menubar to Root
     root.config(menu=menubar)
     root.mainloop()
-
 
 if __name__ == '__main__':
     main()
