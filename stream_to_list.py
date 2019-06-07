@@ -172,6 +172,7 @@ class RawConversations(Frame):
                         break
                 return conversation_list
         except FileNotFoundError:
+            time.sleep(8)
             pass
 
 
