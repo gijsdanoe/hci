@@ -147,7 +147,7 @@ class RawConversations(Frame):
 
     def save(self, conversations):
         conversation = conversations[0]
-        unique_users = conversation[1]
+        unique_users = conversations[1]
         conversation_length = len(conversation)
         clean_conversation = [deEmojify(i) for i in conversation]            
         if 3 <= conversation_length <= 10:
