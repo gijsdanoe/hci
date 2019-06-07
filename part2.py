@@ -30,8 +30,10 @@ class ResponseTreeDisplay(tk.Frame):
         self.tree.place(relx=0.5, y=200, anchor='center')
         self.tree.configure(yscrollcommand=sb.set)
         self.label = Label(self.root, text="Sentiment score").pack()
-        self.w = Scale(self.root, from_=-1, to=1, resolution=0.1, tickinterval=1, orient=HORIZONTAL)
-        self.w.pack()
+        self.w1 = Scale(self.root, from_=-1, to=1, resolution=0.1, tickinterval=1, orient=HORIZONTAL)
+        self.w1.pack()
+        self.w2 = Scale(self.root, from_=-1, to=1, resolution=0.1, tickinterval=1, orient=HORIZONTAL)
+        self.w2.pack()
         self.conversation_list = []
         self.filename = ''
 
@@ -73,7 +75,7 @@ class ResponseTreeDisplay(tk.Frame):
         self.get_url()
         self.conversation_queue(self.filename)
         self.show_convo(self.conversation_list)
-        print(self.w.get())
+
 
     def filteredall(self):
 
@@ -96,7 +98,7 @@ class ResponseTreeDisplay(tk.Frame):
 
         newconvolist = []
         for i, (key, value) in enumerate(sentdictlistdict.items()):
-            if value < self.w.get():
+            if value < self.w2.get() and value > self.w1.get():
                 for j, item in enumerate(self.conversation_list):
                     if i == j:
                         newconvolist.append(item)
