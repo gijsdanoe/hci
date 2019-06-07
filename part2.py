@@ -32,6 +32,15 @@ class ResponseTreeDisplay(tk.Frame):
         self.tree.configure(yscrollcommand=sb.set)
 
         # Sentiment
+        self.var = IntVar()
+        self.var.set(0)
+        self.emptylabel=Label(self.root,text=' ').grid(row=0,padx=75)
+        self.sentiment_label = Label(self.root, text="Sentiment score").grid(row=0,column=1,padx=30)
+        self.b1 = Radiobutton(self.root, text="positive", variable=self.var, value=1).grid(row=1,column=1,padx=30)
+        self.b2 = Radiobutton(self.root, text="neutral", variable=self.var, value=2).grid(row=2,column=1,padx=30)
+        self.b3 = Radiobutton(self.root, text="negative", variable=self.var, value=3).grid(row=3,column=1,padx=30)
+        
+        '''
         self.min_w1 = Label(self.root, text="Min").grid(row=1,padx=30)
         self.max_w1 = Label(self.root, text="Max").grid(row=2,padx=30)
         self.sentiment_label = Label(self.root, text="Sentiment score").grid(row=0, column=1)
@@ -41,10 +50,11 @@ class ResponseTreeDisplay(tk.Frame):
         self.w2.set(1)
         self.w1.grid(row=1,column=1)
         self.w2.grid(row=2,column=1)
+        '''
 
         # Length
-        self.min_c = Label(self.root, text="Min").grid(row=1,column=2,padx=30)
-        self.max_c = Label(self.root, text="Max").grid(row=2,column=2,padx=30)
+        self.min_c = Label(self.root, text="Min").grid(row=1,column=2,padx=15)
+        self.max_c = Label(self.root, text="Max").grid(row=2,column=2,padx=15)
         self.con_label = Label(self.root, text="Length of conversation").grid(row=0,column=3)
         self.min_con = Scale(self.root, from_=3, to=10, tickinterval=3, orient=HORIZONTAL)
         self.min_con.set(2)
@@ -54,8 +64,8 @@ class ResponseTreeDisplay(tk.Frame):
         self.max_con.grid(row=2, column=3)
 
         # Unique users
-        self.min_u = Label(self.root, text="Min").grid(row=1,column=4,padx=30)
-        self.max_u = Label(self.root, text="Max").grid(row=2,column=4,padx=30)
+        self.min_u = Label(self.root, text="Min").grid(row=1,column=4,padx=15)
+        self.max_u = Label(self.root, text="Max").grid(row=2,column=4,padx=15)
         self.usr_label = Label(self.root, text="Number of unique users").grid(row=0,column=5)
         self.min_usr = Scale(self.root, from_=2, to=10, tickinterval=3, orient=HORIZONTAL)
         self.min_usr.set(2)
@@ -65,7 +75,7 @@ class ResponseTreeDisplay(tk.Frame):
         self.min_usr.grid(row=1, column=5)
         self.max_usr.grid(row=2, column=5)
         
-        self.b.grid(row=3, column=4,padx=30)
+        self.b.grid(row=4, column=3,padx=30)
         self.conversation_list = []
         self.con_length = []
         self.unique_usr = []
@@ -130,11 +140,17 @@ class ResponseTreeDisplay(tk.Frame):
                 valuelist.append(value)
 
             avgvalue = sum(valuelist) / len(valuelist)
-            sentdictlistdict[i] = avgvalue
+
+            if valuelist[0]-avgvalue <= 0.1 and valuelist[0]-avgvalue >= -0.1:
+                sentdictlistdict[i] = 2
+            elif valuelist[0] <= avgvalue:
+                sentdictlistdict[i] = 1
+            elif valuelist[0] >= avgvalue:
+                sentdictlistdict[i] = 3
 
         newconvolist = []
         for i, (key, value) in enumerate(sentdictlistdict.items()):
-            if value <= self.w2.get() and value >= self.w1.get():
+            if value == self.var.get():
                 if self.con_length[i] <= self.max_con.get() and self.con_length[i] >= self.min_con.get():
                     if self.unique_usr[i] <= self.max_usr.get() and self.unique_usr[i] >= self.min_usr.get():
                         for j, item in enumerate(self.conversation_list):
