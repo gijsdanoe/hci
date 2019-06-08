@@ -1,4 +1,5 @@
-# Authors: G.Danoe & B.Kleppe
+#!/usr/bin/python3
+# Authors: G.Danoe (s3494888) & B.Kleppe (s3151522)
 # Downloads a Twitter stream, customizable search options and analyses the conversations.
 # Date: 03-04-2019
 
@@ -71,7 +72,7 @@ class RawConversations(Frame):
         word=simpledialog.askstring("Input", "What word are you looking for?")
         lang=simpledialog.askstring("Input", "What language do you want?")
         self.stream = Stream(self.auth, listener)
-        self.stream.filter(track=[word],languages=[lang], async=True)
+        self.stream.filter(track=[word],languages=[lang], is_async=True)
         self.filter = True
         self.filters += word + lang
         self.text_var.set("Buffering, please wait a few seconds and update the tree...")
