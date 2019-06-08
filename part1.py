@@ -70,7 +70,7 @@ class RawConversations(Frame):
 
     def ask_filter(self):
         word=simpledialog.askstring("Input", "What word are you looking for?")
-        lang=simpledialog.askstring("Input", "What language do you want?")
+        lang=simpledialog.askstring("Input", "What language do you want? Enter the 2 letter code (e.g. 'en')")
         self.stream = Stream(self.auth, listener)
         self.stream.filter(track=[word],languages=[lang], is_async=True)
         self.filter = True
@@ -148,7 +148,10 @@ class RawConversations(Frame):
 
     def save(self, conversations):
         conversation = conversations[0]
-        unique_users = conversations[1]
+        try:
+            unique_users = conversations[1]
+        except:
+            pass
         conversation_length = len(conversation)
         clean_conversation = [deEmojify(i) for i in conversation]            
         if 3 <= conversation_length <= 10:
@@ -226,10 +229,6 @@ def main():
     filemenu = Menu(menubar, tearoff=0)
     filemenu.add_command(label="Exit", command=root.quit)
     menubar.add_cascade(label="File", menu=filemenu)
-
-    # Processing menu
-    procmenu = Menu(menubar, tearoff=0)
-    menubar.add_cascade(label="Processing", menu=procmenu)
 
     root.config(menu=menubar)
     root.mainloop()

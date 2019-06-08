@@ -170,9 +170,10 @@ def main():
     a = ResponseTreeDisplay(root)
     # Creates Menubar
     menubar = tk.Menu(root)
-    # Creates Menu 'File' with Item 'Exit'
+    # Creates Menu 'File' with Items 'Open' and 'Exit'
     menu2 = tk.Menu(menubar, tearoff=0)
     menu2.add_command(label='Open', command=a.all)
+    menu2.add_command(label="Exit", command=root.quit)
     # Adds Menu2 to Menubar
     menubar.add_cascade(label='File', menu=menu2)
     # Adds Menubar to Root
